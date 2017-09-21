@@ -127,8 +127,7 @@ class Score:
 
     def is_straight(self):
         low = min(self.ranks)
-        high = max(self.ranks)
-        if (high - low) == 4:
+        if (low + 1 in self.ranks) and (low + 2 in self.ranks) and (low + 3 in self.ranks) and (low + 4 in self.ranks):
             return True
         else:
             return False
