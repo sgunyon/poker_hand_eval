@@ -103,43 +103,26 @@ class Score:
 
     def is_flush(self):
         current_suit = self.suits[0]
-        for suit in self.suits:
-            if suit != current_suit:
-                return False
-            current_suit = suit
-        return True
+        return all(suit == current_suit for suit in self.suits)
 
     def is_royal_flush(self):
         low = min(self.ranks)
-        if low == 10 and (low + 1 in self.ranks) and (low + 2 in self.ranks) and (low + 3 in self.ranks) and (
-                low + 4 in self.ranks):
-            return True
-        else:
-            return False
+        return low == 10 and self.is_straight() and self.is_flush()
 
     def is_four_of_a_kind(self):
         card_one_count = self.ranks.count(self.ranks[0])
         card_two_count = self.ranks.count(self.ranks[1])
-        if card_one_count == 4 or card_two_count == 4:
-            return True
-        else:
-            return False
+        return card_one_count == 4 or card_two_count == 4
 
     def is_straight(self):
         low = min(self.ranks)
-        if (low + 1 in self.ranks) and (low + 2 in self.ranks) and (low + 3 in self.ranks) and (low + 4 in self.ranks):
-            return True
-        else:
-            return False
+        return (low + 1 in self.ranks) and (low + 2 in self.ranks) and (low + 3 in self.ranks) and (low + 4 in self.ranks)
 
     def is_three_of_a_kind(self):
         card_one_count = self.ranks.count(self.ranks[0])
         card_two_count = self.ranks.count(self.ranks[1])
         card_three_count = self.ranks.count(self.ranks[1])
-        if card_one_count == 3 or card_two_count == 3 or card_three_count == 3:
-            return True
-        else:
-            return False
+        return card_one_count == 3 or card_two_count == 3 or card_three_count == 3
 
     def is_two_pair(self):
         count = 0
@@ -148,34 +131,19 @@ class Score:
                 count += 1
             else:
                 continue
-        if count >= 3:
-            return True
-        else:
-            return False
+        return count >= 3
 
     def is_pair(self):
-        for rank in self.ranks:
-            if self.ranks.count(rank) > 1:
-                return True
-            else:
-                continue
-        return False
+        return any(self.ranks.count(rank) > 1 for rank in self.ranks)
 
     def is_full_house(self):
         self.ranks.sort()
         card_one_count = self.ranks.count(self.ranks[0])
         card_two_count = self.ranks.count(self.ranks[len(self.ranks) - 1])
-
-        if (card_one_count == 2 and card_two_count == 3) or (card_one_count == 3 and card_two_count == 2):
-            return True
-        else:
-            return False
+        return (card_one_count == 2 and card_two_count == 3) or (card_one_count == 3 and card_two_count == 2)
 
     def is_straight_flush(self):
-        if self.is_flush() is True and self.is_straight() is True:
-            return True
-        else:
-            return False
+        return self.is_flush() and self.is_straight()
 
 
 class Game:
@@ -208,36 +176,26 @@ class Game:
     def score_hand(self, hand):
         score = Score(hand)
         print("Hand evaluation:")
-        if score.is_royal_flush() is True:
+        if score.is_royal_flush():
             print("Royal Flush!")
-            return 10
-        elif score.is_straight_flush() is True:
+        elif score.is_straight_flush():
             print("Straight Flush!")
-            return 9
-        elif score.is_four_of_a_kind() is True:
+        elif score.is_four_of_a_kind():
             print("Four of a Kind!")
-            return 8
-        elif score.is_full_house() is True:
+        elif score.is_full_house():
             print("Full House!")
-            return 7
-        elif score.is_flush() is True:
+        elif score.is_flush():
             print("Flush!")
-            return 6
-        elif score.is_straight() is True:
+        elif score.is_straight():
             print("Straight!")
-            return 5
-        elif score.is_three_of_a_kind() is True:
+        elif score.is_three_of_a_kind():
             print("Three of a Kind!")
-            return 4
-        elif score.is_two_pair() is True:
+        elif score.is_two_pair():
             print("Two Pair!")
-            return 3
-        elif score.is_pair() is True:
+        elif score.is_pair():
             print("Pair!")
-            return 2
         else:
             print("High card")
-            return 1
 
 
 def main():
