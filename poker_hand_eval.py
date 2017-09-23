@@ -115,6 +115,7 @@ class Score:
         return card_one_count == 4 or card_two_count == 4
 
     def is_straight(self):
+        self.eval_ace_low()
         low = min(self.ranks)
         return (low + 1 in self.ranks) and (low + 2 in self.ranks) and (low + 3 in self.ranks) and (low + 4 in self.ranks)
 
@@ -143,7 +144,12 @@ class Score:
         return (card_one_count == 2 and card_two_count == 3) or (card_one_count == 3 and card_two_count == 2)
 
     def is_straight_flush(self):
+        self.eval_ace_low()
         return self.is_flush() and self.is_straight()
+
+    def eval_ace_low(self):
+        if all(x in self.ranks for x in range(2,6)) and 14 in self.ranks:
+            self.ranks.append(1)
 
 
 class Game:
