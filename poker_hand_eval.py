@@ -117,12 +117,12 @@ class Score:
     def is_straight(self):
         self.eval_ace_low()
         low = min(self.ranks)
-        return (low + 1 in self.ranks) and (low + 2 in self.ranks) and (low + 3 in self.ranks) and (low + 4 in self.ranks)
+        return all((low + i) in self.ranks for i in range(1,hand_size))
 
     def is_three_of_a_kind(self):
         card_one_count = self.ranks.count(self.ranks[0])
         card_two_count = self.ranks.count(self.ranks[1])
-        card_three_count = self.ranks.count(self.ranks[1])
+        card_three_count = self.ranks.count(self.ranks[2])
         return card_one_count == 3 or card_two_count == 3 or card_three_count == 3
 
     def is_two_pair(self):
@@ -209,7 +209,7 @@ def main():
     deck = game.ready_deck()
     hand = game.deal_hand(deck)
     game.trade_in_cards(deck, hand)
-    game.score_hand(hand)
+    return game.score_hand(hand)
 
 
 main()
